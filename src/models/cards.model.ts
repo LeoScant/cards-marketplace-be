@@ -6,7 +6,6 @@ import {Users} from './users.model';
 export class Cards extends Entity {
   @property({
     type: 'number',
-    required: true,
     jsonSchema: {nullable: false},
     scale: 0,
     generated: true,
@@ -17,7 +16,6 @@ export class Cards extends Entity {
 
   @property({
     type: 'string',
-    required: true,
     jsonSchema: {nullable: false},
     length: 255,
     postgresql: {columnName: 'title', dataType: 'character varying', dataLength: 255, dataPrecision: null, dataScale: null, nullable: 'NO', generated: undefined},
@@ -26,7 +24,6 @@ export class Cards extends Entity {
 
   @property({
     type: 'string',
-    required: true,
     jsonSchema: {nullable: false},
     postgresql: {columnName: 'description', dataType: 'text', dataLength: null, dataPrecision: null, dataScale: null, nullable: 'NO', generated: undefined},
   })
@@ -115,6 +112,13 @@ export class Cards extends Entity {
     postgresql: {columnName: 'tags', dataType: 'ARRAY', dataLength: null, dataPrecision: null, dataScale: null, nullable: 'YES', generated: undefined},
   })
   tags?: string;
+
+  @property({
+    type: 'string',
+    jsonSchema: {nullable: true},
+    postgresql: {columnName: 'tokenId', dataType: 'text', dataLength: null, dataPrecision: null, dataScale: null, nullable: 'YES', generated: undefined},
+  })
+  tokenId?: string;
 
   @hasMany(() => Users, {through: {model: () => LikedCards, keyFrom: 'cardId', keyTo: 'userId'}})
   users: Users[];

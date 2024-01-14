@@ -1,4 +1,4 @@
-import {Entity, model, property, hasMany} from '@loopback/repository';
+import {Entity, hasMany, model, property} from '@loopback/repository';
 import {Cards} from './cards.model';
 import {LikedCards} from './liked-cards.model';
 
@@ -6,7 +6,6 @@ import {LikedCards} from './liked-cards.model';
 export class Users extends Entity {
   @property({
     type: 'number',
-    required: true,
     jsonSchema: {nullable: false},
     scale: 0,
     generated: true,
@@ -79,7 +78,7 @@ export class Users extends Entity {
     length: 255,
     postgresql: {columnName: 'walletaddress', dataType: 'character varying', dataLength: 255, dataPrecision: null, dataScale: null, nullable: 'YES', generated: undefined},
   })
-  walletaddress?: string;
+  walletAddress?: string;
 
   @property({
     type: 'string',
@@ -96,12 +95,12 @@ export class Users extends Entity {
   bio?: string;
 
   @property({
-    type: 'number',
+    type: 'string',
     jsonSchema: {nullable: true},
     scale: 0,
-    postgresql: {columnName: 'nonce', dataType: 'bigint', dataLength: null, dataPrecision: null, dataScale: 0, nullable: 'YES', generated: undefined},
+    postgresql: {columnName: 'nonce', dataType: 'string', dataLength: null, dataPrecision: null, dataScale: 0, nullable: 'YES', generated: undefined},
   })
-  nonce?: number;
+  nonce?: string;
 
   @hasMany(() => Cards, {through: {model: () => LikedCards, keyFrom: 'userId', keyTo: 'cardId'}})
   likedCards: Cards[];
