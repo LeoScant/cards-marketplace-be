@@ -75,7 +75,7 @@ export class UserController {
   async getLikedCards(
     @inject(AuthenticationBindings.CURRENT_USER) user: UserProfile,
   ) {
-    return await this.userService.getLikedCards(user.walletAddress);
+    return await this.userService.getLikedCards(user.userId);
   }
 
 }

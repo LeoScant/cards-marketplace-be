@@ -73,7 +73,7 @@ export class UserService {
     // The signature verification is successful if the recovered address matches the user's publicAddress
     if (address.toLowerCase() === walletAddress.toLowerCase()) {
       // Create a JWT or session identifier
-      const token = await generateToken(walletAddress);
+      const token = await generateToken(walletAddress, user.id);
 
       // Update the user's nonce value
       const nonce = generateNonce();
@@ -85,27 +85,8 @@ export class UserService {
     }
   }
 
-  /**
-   * Retrieves the liked cards for a given user.
-   * @param walletAddress - The wallet address of the user.
-   * @returns An array of liked cards.
-   * @throws Error if the wallet address is not provided.
-   */
-  async getLikedCards(walletAddress: string) {
-    if (!walletAddress) throw new Error('Wallet address is required');
-    const user = await this.usersRepository.findOne({where: {walletAddress: walletAddress}, include: [{relation: 'likedCards'}]});
+  async getLikedCards(userId: number) {
+    const user = await this.usersRepository.findById(userId, {include: [{relation: 'likedCards'}]});
     return user?.likedCards || [];
-  }
-
-  /**
-   * Retrieves a user by his wallet address.
-   * @param walletAddress - The wallet address of the user.
-   * @returns The user object if found, otherwise null.
-   * @throws Error if the wallet address is not provided.
-   */
-  async getUserByWalletAddress(walletAddress: string) {
-    if (!walletAddress) throw new Error('Wallet address is required');
-    const user = await this.usersRepository.findOne({where: {walletAddress: walletAddress}});
-    return user;
   }
 }

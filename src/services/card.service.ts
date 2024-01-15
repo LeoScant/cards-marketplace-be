@@ -18,37 +18,45 @@ export class CardService {
   ) { }
 
   async getAllCards() {
-    return await this.cardRepository.find({});
+    return await this.cardRepository.find({include: [{relation: 'owner', scope: {fields: {walletAddress: true}}}]});
   }
 
-  async likeCard(cardId: number, walletAddress: string) {
+  async getCardsByOwner(userId: number) {
+    return await this.cardRepository.find({where: {ownerId: userId}});
+  }
+
+  async likeCard(cardId: number, userId: number) {
     const card = await this.cardRepository.findById(cardId, {include: [{relation: 'users'}]});
     if (!card) throw new Error('Card not found');
-    const user = await this.userService.getUserByWalletAddress(walletAddress);
-    if (!user) throw new Error('User not found');
+
     const userIsIncluded = card?.users?.find(
-      (user: Users) => user.walletAddress === walletAddress);
-    if (userIsIncluded) await this.likedCardsService.remove(cardId, user.id);
-    else await this.likedCardsService.create(cardId, user.id);
-    return await this.userService.getLikedCards(walletAddress);
+      (user: Users) => user.id === userId);
+
+    if (userIsIncluded) await this.likedCardsService.remove(cardId, userId);
+
+    else await this.likedCardsService.create(cardId, userId);
+
+    return await this.userService.getLikedCards(userId);
   }
 
-  async createCard(card: Cards, walletAddress: string) {
-    const user = await this.userService.getUserByWalletAddress(walletAddress);
-    if (!user) throw new Error('User not found');
-    card.ownerId = user.id;
+  async createCard(card: Cards, walletAddress: string, userId: number) {
+    card.ownerId = userId;
     const ipfsResponse = await pinJSONToIPFS(card.title, card.description, card.imageurl)
     card.tokenId = await mintNFT(ipfsResponse.IpfsHash, walletAddress);
+
     return await this.cardRepository.create(card);
   }
 
-  async deleteCard(cardId: number, walletAddress: string) {
+  async deleteCard(cardId: number, userId: number) {
     const card = await this.cardRepository.findById(cardId);
     if (!card) throw new Error('Card not found');
-    const user = await this.userService.getUserByWalletAddress(walletAddress);
-    if (!user) throw new Error('User not found');
-    if (card.ownerId !== user.id) throw new Error('User is not the owner of the card');
+    if (card.ownerId !== userId) throw new Error('User is not the owner of the card');
+
     if (card.tokenId) await burnNFT(card.tokenId);
     return await this.cardRepository.deleteById(cardId);
+  }
+
+  async getCardById(cardId: number) {
+    return await this.cardRepository.findById(cardId, {include: ['owner']});
   }
 }

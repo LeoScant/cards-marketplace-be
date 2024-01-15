@@ -29,7 +29,7 @@ export class JwtStrategy implements AuthenticationStrategy {
   }
 }
 
-export const generateToken = async (walletAddress: string): Promise<string> => {
+export const generateToken = async (walletAddress: string, userId: number): Promise<string> => {
   if (!walletAddress) {
     throw new HttpErrors.Unauthorized(
       'Error while generating token : userprofile is null',
@@ -37,7 +37,7 @@ export const generateToken = async (walletAddress: string): Promise<string> => {
   }
   let token = '';
   try {
-    token = await jwt.sign({walletAddress, [securityId]: walletAddress}, process.env.TOKEN_SECRET_VALUE || '', {
+    token = await jwt.sign({walletAddress, userId, [securityId]: walletAddress}, process.env.TOKEN_SECRET_VALUE || '', {
       expiresIn: process.env.TOKEN_EXPIRES_IN,
     });
     return token;
