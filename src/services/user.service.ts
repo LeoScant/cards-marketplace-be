@@ -23,8 +23,14 @@ export class UserService {
    */
   async getNonce(walletAddress: string) {
     if (!walletAddress) throw new Error('Wallet address is required');
+
+    // Check if the user exists
     let user = await this.usersRepository.findOne({where: {walletAddress: walletAddress}});
+
+    // If the user does not exist, create a new user
     if (!user) user = await this.createUser(walletAddress);
+
+    // Return the nonce
     return user?.nonce;
   }
 
@@ -36,8 +42,12 @@ export class UserService {
    */
   async createUser(walletAddress: string) {
     if (!walletAddress) throw new Error('Wallet address is required');
-    const nonce = generateNonce();;
+
+    // Generate a nonce and create the user
+    const nonce = generateNonce();
     const newUser = await this.usersRepository.create({walletAddress: walletAddress, nonce});
+
+    // Return the user
     return newUser;
   }
 
@@ -54,6 +64,7 @@ export class UserService {
     if (!walletAddress) throw new Error('Wallet address is required');
     if (!signature) throw new Error('Signature is required');
 
+    // Check if the user exists
     const user = await this.usersRepository.findOne({where: {walletAddress: walletAddress}, include: ['likedCards', 'ownedCards']});
     if (!user) throw new Error('User not found');
 
@@ -82,6 +93,7 @@ export class UserService {
     }
   }
 
+  // This function is called to see cards that a user has liked
   async getLikedCards(userId: number) {
     const user = await this.usersRepository.findById(userId, {include: [{relation: 'likedCards'}]});
     return user?.likedCards || [];

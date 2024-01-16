@@ -32,6 +32,19 @@ The API endpoints are located in `src/controllers`:
   - `POST /{tradeOfferId}/accept`: Accept a trade offer, checking if both user's approved the transaction on blockchain, transfering the NFTs and changing the ownerId on the card.
 
 
+  The application logic related to the API endpoints can be found in the ```src/services``` directory. This directory contains the service files that handle the business logic and data manipulation for each endpoint.
+
+## Database
+
+The backend application uses Postgres 14 as the database. The database schema includes the following tables:
+
+- `Users`: Stores all the users' data.
+- `Cards`: Stores all the cards' data.
+- `LikedCards`: Represents a many-to-many relationship between Users and Cards, storing information about the cards that a user has liked.
+- `TradeOffers`: Represents a many-to-many relationship, storing information about all the trade offers made by users.
+
+The database schema design ensures efficient storage and retrieval of data for the marketplace application. You can find all the info about the database models in ```src/models``` and the datasource in ```src/datasources```.
+
 ## Blockchain Integration
 
 The blockchain integration is handled in the `src/utils/utils.ts` file. This file contains several utility functions that interact with the Ethereum blockchain using the ethers.js library.
