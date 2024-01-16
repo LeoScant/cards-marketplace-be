@@ -41,7 +41,7 @@ export class CardController {
     @inject(AuthenticationBindings.CURRENT_USER) user: UserProfile,
     @oas.requestBody() card: Cards,
   ) {
-    return await this.cardService.createCard(card, user.walletAddress, user.id);
+    return await this.cardService.createCard(card, user.walletAddress, user.userId);
   }
 
   @oas.del('{cardId}')
