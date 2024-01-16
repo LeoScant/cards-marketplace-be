@@ -11,7 +11,6 @@ export class UserController {
     public userService: UserService,
   ) { }
 
-  //create a get endpoint that given the user wallet address returns the nonce
   @oas.get('/getNonce', {
     responses: {
       '200': {
@@ -32,7 +31,6 @@ export class UserController {
     return await this.userService.getNonce(walletAddress);
   }
 
-  //create a post endpoint that given the user wallet address and signature logs the user in
   @oas.post('/login', {
     responses: {
       '200': {
@@ -53,7 +51,6 @@ export class UserController {
     return await this.userService.login(body.walletAddress, body.signature);
   }
 
-  //create a get endpoint to get all user's liked cards
   @oas.get('/likedCards', {
     responses: {
       '200': {
