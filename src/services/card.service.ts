@@ -1,4 +1,4 @@
-import { /* inject, */ BindingScope, injectable, service} from '@loopback/core';
+import {BindingScope, injectable, service} from '@loopback/core';
 import {repository} from '@loopback/repository';
 import {Cards, Users} from '../models';
 import {CardsRepository} from '../repositories';

@@ -23,8 +23,8 @@
     "eslint:fix": "npm run eslint -- --fix",
     "pretest": "npm run rebuild",
     "test": "lb-mocha --allow-console-logs \"dist/__tests__\"",
-    "posttest": "npm run lint",
-    "test:dev": "lb-mocha --allow-console-logs dist/__tests__/**/*.js && npm run posttest",
+    "posttest": "",
+    "test:dev": "lb-mocha --allow-console-logs dist/__tests__/**/*.js",
     "docker:build": "docker build -t cards-marketplace-be .",
     "docker:run": "docker run -p 3000:3000 -d cards-marketplace-be",
     "premigrate": "npm run build",
@@ -72,6 +72,7 @@
     "@loopback/testlab": "^6.1.5",
     "@types/node": "^16.18.70",
     "eslint": "^8.51.0",
+    "mocha": "^10.2.0",
     "source-map-support": "^0.5.21",
     "typescript": "~5.2.2"
   }

@@ -12,7 +12,7 @@ export class Cards extends Entity {
     id: 1,
     postgresql: {columnName: 'id', dataType: 'integer', dataLength: null, dataPrecision: null, dataScale: 0, nullable: 'NO', generated: undefined},
   })
-  id: number;
+  id?: number;
 
   @property({
     type: 'string',
@@ -34,7 +34,7 @@ export class Cards extends Entity {
     jsonSchema: {nullable: true},
     postgresql: {columnName: 'imageurl', dataType: 'text', dataLength: null, dataPrecision: null, dataScale: null, nullable: 'YES', generated: undefined},
   })
-  imageurl?: string;
+  imageurl: string;
 
   @property({
     type: 'number',
@@ -68,14 +68,6 @@ export class Cards extends Entity {
     postgresql: {columnName: 'rarity', dataType: 'character varying', dataLength: 50, dataPrecision: null, dataScale: null, nullable: 'YES', generated: undefined},
   })
   rarity?: string;
-
-  // @property({
-  //   type: 'number',
-  //   jsonSchema: {nullable: true},
-  //   scale: 0,
-  //   postgresql: {columnName: 'ownerid', dataType: 'integer', dataLength: null, dataPrecision: null, dataScale: 0, nullable: 'YES', generated: undefined},
-  // })
-  // ownerid?: number;
 
   @property({
     type: 'date',
@@ -121,10 +113,10 @@ export class Cards extends Entity {
   tokenId?: string;
 
   @hasMany(() => Users, {through: {model: () => LikedCards, keyFrom: 'cardId', keyTo: 'userId'}})
-  users: Users[];
+  users?: Users[];
 
   @belongsTo(() => Users,)
-  ownerId: number;
+  ownerId?: number;
   // Define well-known properties here
 
   // Indexer property to allow additional data

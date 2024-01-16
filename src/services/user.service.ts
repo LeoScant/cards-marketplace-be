@@ -1,4 +1,4 @@
-import {BindingScope, injectable, service} from '@loopback/core';
+import {BindingScope, injectable} from '@loopback/core';
 import {repository} from '@loopback/repository';
 import {HttpErrors} from '@loopback/rest';
 import {recoverPersonalSignature} from 'eth-sig-util';
@@ -6,15 +6,12 @@ import {bufferToHex} from 'ethereumjs-util';
 import {generateToken} from '../authentication-strategies/jwt-strategy';
 import {UsersRepository} from '../repositories';
 import {generateNonce} from '../utils/utils';
-import {JwtService} from './jwt.service';
 
 @injectable({scope: BindingScope.TRANSIENT})
 export class UserService {
   constructor(
     @repository(UsersRepository)
     public usersRepository: UsersRepository,
-    @service(JwtService)
-    public jwtService: JwtService,
   ) { }
 
   /**

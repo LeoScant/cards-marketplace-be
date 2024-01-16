@@ -73,6 +73,10 @@ export function getWallet(): ethers.Wallet {
   return new ethers.Wallet(process.env.ETH_PRIVATE_KEY, getProvider());
 }
 
+/**
+ * Retrieves the contract instance for interacting with the smart contract.
+ * @returns {ethers.Contract} The contract instance.
+ */
 const getContract = () => {
   const wallet = getWallet();
   const contractAddress = process.env.CONTRACT_ADDRESS || '';
